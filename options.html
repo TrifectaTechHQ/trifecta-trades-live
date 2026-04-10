@@ -1,0 +1,4690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trifecta Trade Scan — 2026-04-07</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e8eaf0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 24px;
+  }
+  .header {
+    border-bottom: 2px solid #2d3154;
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .logo { font-size: 11px; color: #8892a4; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .title { font-size: 26px; font-weight: 700; color: #e8eaf0; }
+  .subtitle { font-size: 13px; color: #8892a4; margin-top: 4px; }
+  .scan-time { text-align: right; }
+  .scan-time .label { font-size: 11px; color: #8892a4; text-transform: uppercase; letter-spacing: 1px; }
+  .scan-time .time { font-size: 16px; font-weight: 600; color: #4f8ef7; }
+
+  /* Market Context Bar */
+  .market-bar {
+    background: #1a1d2e;
+    border: 1px solid #2d3154;
+    border-radius: 10px;
+    padding: 18px 24px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .bias-badge {
+    display: inline-block;
+    background: #e74c3c22;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+  .market-item { text-align: center; }
+  .market-label { font-size: 11px; color: #8892a4; text-transform: uppercase; letter-spacing: 1px; }
+  .market-val { font-size: 15px; font-weight: 600; margin-top: 2px; }
+  .market-note {
+    flex: 1;
+    min-width: 200px;
+    font-size: 13px;
+    color: #8892a4;
+    border-left: 1px solid #2d3154;
+    padding-left: 24px;
+  }
+
+  /* Tier Sections */
+  .tier-section {
+    margin-bottom: 36px;
+  }
+  .tier-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .tier-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .tier-title { font-size: 18px; font-weight: 700; }
+  .tier-dte { font-size: 12px; color: #8892a4; }
+  .tier-desc {
+    font-size: 12px;
+    color: #8892a4;
+    margin-bottom: 14px;
+    padding-left: 4px;
+    border-left: 3px solid #2d3154;
+    padding-left: 12px;
+  }
+  .tier-count {
+    font-size: 12px;
+    color: #8892a4;
+    margin-bottom: 14px;
+  }
+
+  /* Trade Cards */
+  .trade-cards { display: flex; flex-direction: column; gap: 14px; }
+  .trade-card {
+    background: #1a1d2e;
+    border: 1px solid #2d3154;
+    border-radius: 10px;
+    padding: 18px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .trade-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+  }
+  .card-tier1::before { background: #e74c3c; }
+  .card-tier2::before { background: #4f8ef7; }
+  .card-tier3::before { background: #2ecc71; }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .card-symbol { font-size: 22px; font-weight: 800; color: #e8eaf0; }
+  .card-direction-call {
+    background: #2ecc7122;
+    border: 1px solid #2ecc71;
+    color: #2ecc71;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 4px;
+  }
+  .card-direction-put {
+    background: #e74c3c22;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 4px;
+  }
+  .card-score {
+    font-size: 13px;
+    color: #8892a4;
+  }
+  .card-score span {
+    font-weight: 700;
+    color: #f0c040;
+    font-size: 16px;
+  }
+
+  .card-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px 24px;
+    margin-bottom: 14px;
+  }
+  .detail-item { }
+  .detail-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8892a4;
+  }
+  .detail-val {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e8eaf0;
+    margin-top: 1px;
+  }
+
+  .card-greeks {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: #1e2235;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+  }
+  .greek-item { text-align: center; }
+  .greek-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8892a4;
+  }
+  .greek-val {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4f8ef7;
+    margin-top: 1px;
+  }
+
+  .card-rationale {
+    font-size: 12px;
+    color: #8892a4;
+    line-height: 1.5;
+    padding-top: 10px;
+    border-top: 1px solid #2d3154;
+  }
+  .card-rationale strong { color: #e8eaf0; }
+
+  .max-loss {
+    display: inline-block;
+    font-size: 11px;
+    background: #e74c3c15;
+    border: 1px solid #e74c3c44;
+    color: #e74c3c;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-top: 6px;
+  }
+
+  /* Trade Management Panel */
+  .trade-mgmt {
+    margin-bottom: 12px;
+    border: 1px solid #2d3154;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .trade-mgmt-header {
+    background: #1e2235;
+    padding: 7px 14px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #8892a4;
+    font-weight: 700;
+    border-bottom: 1px solid #2d3154;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .trade-mgmt-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .mgmt-item {
+    padding: 10px 14px;
+    border-right: 1px solid #2d3154;
+  }
+  .mgmt-item:last-child { border-right: none; }
+  .mgmt-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8892a4;
+    margin-bottom: 3px;
+  }
+  .mgmt-price {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .mgmt-sub {
+    font-size: 11px;
+    color: #8892a4;
+    margin-top: 2px;
+  }
+  .mgmt-stop { color: #e74c3c; }
+  .mgmt-target1 { color: #2ecc71; }
+  .mgmt-target2 { color: #27ae60; }
+  .mgmt-time { color: #f0c040; }
+  .gtc-note {
+    background: #4f8ef711;
+    border-top: 1px solid #2d3154;
+    padding: 8px 14px;
+    font-size: 11px;
+    color: #4f8ef7;
+  }
+
+  /* Empty state */
+  .empty-state {
+    background: #1a1d2e;
+    border: 1px dashed #2d3154;
+    border-radius: 10px;
+    padding: 28px;
+    text-align: center;
+    color: #8892a4;
+    font-size: 13px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #2d3154;
+    text-align: center;
+    font-size: 11px;
+    color: #8892a4;
+    line-height: 1.8;
+  }
+  .disclaimer {
+    max-width: 600px;
+    margin: 8px auto 0;
+    font-size: 11px;
+    color: #8892a488;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="logo">Trifecta Holdings — Trading</div>
+      <div class="title">Morning Trade Scan</div>
+      <div class="subtitle">Options intelligence report for manual execution on Robinhood</div>
+    </div>
+    <div class="scan-time">
+      <div class="label">Scan Generated</div>
+      <div class="time">2026-04-07 11:28 ET</div>
+    </div>
+  </div>
+</div>
+
+<div class="market-bar">
+  <div class="market-item">
+    <div class="market-label">Market Bias</div>
+    <div class="market-val"><span class="bias-badge">BEARISH</span></div>
+  </div>
+  <div class="market-item">
+    <div class="market-label">SPY</div>
+    <div class="market-val"><span style="color:#e74c3c">▼ 0.92%</span></div>
+  </div>
+  <div class="market-item">
+    <div class="market-label">QQQ</div>
+    <div class="market-val"><span style="color:#e74c3c">▼ 1.28%</span></div>
+  </div>
+  <div class="market-item">
+    <div class="market-label">IWM</div>
+    <div class="market-val"><span style="color:#e74c3c">▼ 0.76%</span></div>
+  </div>
+  <div class="market-item">
+    <div class="market-label">SPY RSI</div>
+    <div class="market-val" style="color:#f0c040">40.3</div>
+  </div>
+  <div class="market-note">
+    Broad market under pressure — favor put setups. SPY RSI at 40.3 — neutral territory.
+  </div>
+</div>
+
+
+<div class="tier-section">
+  <div class="tier-header">
+    <span class="tier-badge" style="background:#e74c3c22; border:1px solid #e74c3c; color:#e74c3c">0–7 DTE</span>
+    <span class="tier-title">🔥 Tier 1 — Gamma Plays</span>
+  </div>
+  <div class="tier-desc">High risk / high reward. Only exceptional setups surface here. Size small — these expire fast.</div>
+  <div class="tier-count">809 candidates scanned → top 12 selected (6 calls + 6 puts)</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#2ecc71;margin-bottom:12px;letter-spacing:0.05em">📈 CALLS — Top 6</div>
+      <div class="trade-cards">
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>72.1</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$252</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-08</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">1 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$1.81</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$1.80 / $1.83</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">48.0%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">2,141</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.7%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$181 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.407</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.061700</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-1.2305</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.0509</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $1.81 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$0.91</div>
+        <div class="mgmt-sub">–50% · –$90/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$3.17</div>
+        <div class="mgmt-sub">+75% (½ off) · +$136/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$4.53</div>
+        <div class="mgmt-sub">+150% (full) · +$272/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.8% today). RSI 50.4. Delta 0.41 — balanced directional exposure. IV 48%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>72.0</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$253</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-10</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">3 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$2.77</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$2.75 / $2.80</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">42.9%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">799</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.8%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$277 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.406</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.039900</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.6388</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.0881</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $2.77 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$1.39</div>
+        <div class="mgmt-sub">–50% · –$138/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$4.85</div>
+        <div class="mgmt-sub">+75% (½ off) · +$208/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$6.92</div>
+        <div class="mgmt-sub">+150% (full) · +$416/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.8% today). RSI 50.4. Delta 0.41 — balanced directional exposure. IV 43%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>69.7</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$584</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-08</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">1 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$3.49</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$3.48 / $3.50</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">40.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">4,806</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.6%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$349 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.404</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.031700</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-2.3916</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1177</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $3.49 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$1.75</div>
+        <div class="mgmt-sub">–50% · –$174/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$6.11</div>
+        <div class="mgmt-sub">+75% (½ off) · +$262/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$8.73</div>
+        <div class="mgmt-sub">+150% (full) · +$524/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-1.3% today). RSI 39.0 — potential oversold bounce. Delta 0.40 — balanced directional exposure. IV 40%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>69.6</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$585</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-09</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">2 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$4.27</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$4.25 / $4.29</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">35.4%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,674</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.9%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$427 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.400</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.025400</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-1.4914</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1661</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $4.27 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.13</div>
+        <div class="mgmt-sub">–50% · –$213/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$7.47</div>
+        <div class="mgmt-sub">+75% (½ off) · +$320/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$10.67</div>
+        <div class="mgmt-sub">+150% (full) · +$640/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-1.3% today). RSI 39.0 — potential oversold bounce. Delta 0.40 — balanced directional exposure. IV 35%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>69.3</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$657</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-09</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">2 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$4.25</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$4.24 / $4.26</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">31.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,062</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$425 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.398</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.025300</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-1.4948</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1864</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $4.25 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.12</div>
+        <div class="mgmt-sub">–50% · –$212/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$7.44</div>
+        <div class="mgmt-sub">+75% (½ off) · +$319/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$10.62</div>
+        <div class="mgmt-sub">+150% (full) · +$638/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.9% today). RSI 40.3 — potential oversold bounce. Delta 0.40 — balanced directional exposure. IV 32%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>69.0</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$658</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-10</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">3 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$4.96</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$4.95 / $4.98</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">30.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">2,069</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.6%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$496 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.395</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.021400</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-1.1820</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.2278</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $4.96 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.48</div>
+        <div class="mgmt-sub">–50% · –$248/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$8.68</div>
+        <div class="mgmt-sub">+75% (½ off) · +$372/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$12.40</div>
+        <div class="mgmt-sub">+150% (full) · +$744/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.9% today). RSI 40.3 — potential oversold bounce. Delta 0.39 — balanced directional exposure. IV 30%. Tight bid/ask — clean fill expected.
+  </div>
+</div></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#e74c3c;margin-bottom:12px;letter-spacing:0.05em">📉 PUTS — Top 6</div>
+      <div class="trade-cards">
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">CVX</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>93.7</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$203.06 <span style="font-size:12px; color:#2ecc71">▲2.12%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$200</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-10</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">3 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$1.68</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$1.67 / $1.69</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">41.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">57.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">656</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$168 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.331</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.047900</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.4500</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.0667</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $1.68 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$0.84</div>
+        <div class="mgmt-sub">–50% · –$84/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$2.94</div>
+        <div class="mgmt-sub">+75% (½ off) · +$126/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$4.20</div>
+        <div class="mgmt-sub">+150% (full) · +$252/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish momentum (+2.1% today). RSI 57.0. Delta 0.33 — balanced directional exposure. IV 41%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>91.2</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$248</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-10</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">3 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$3.00</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$2.97 / $3.02</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">45.8%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">775</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.7%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$300 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.397</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.037100</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.6571</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.0875</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $3.00 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$1.50</div>
+        <div class="mgmt-sub">–50% · –$150/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$5.25</div>
+        <div class="mgmt-sub">+75% (½ off) · +$225/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$7.50</div>
+        <div class="mgmt-sub">+150% (full) · +$450/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on IWM. RSI 50.4. Delta 0.40 — balanced directional exposure. IV 46%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>90.6</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$248</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-13</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">6 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$3.54</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$3.51 / $3.58</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">37.0%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">633</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">2.0%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$354 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.405</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.032600</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.3735</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1244</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $3.54 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$1.77</div>
+        <div class="mgmt-sub">–50% · –$177/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$6.20</div>
+        <div class="mgmt-sub">+75% (½ off) · +$266/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$8.85</div>
+        <div class="mgmt-sub">+150% (full) · +$531/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on IWM. RSI 50.4. Delta 0.40 — balanced directional exposure. IV 37%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>89.2</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$649</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-09</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">2 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$4.82</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$4.80 / $4.84</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">34.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">958</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.8%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$482 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.402</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.023400</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-1.5714</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1870</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $4.82 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.41</div>
+        <div class="mgmt-sub">–50% · –$241/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$8.44</div>
+        <div class="mgmt-sub">+75% (½ off) · +$362/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$12.05</div>
+        <div class="mgmt-sub">+150% (full) · +$723/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on SPY. RSI 40.3. Delta 0.40 — balanced directional exposure. IV 34%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>88.3</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$577</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-09</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">2 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$4.74</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$4.72 / $4.77</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">38.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">534</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$474 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.400</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.023500</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-1.5609</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1660</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $4.74 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.37</div>
+        <div class="mgmt-sub">–50% · –$237/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$8.29</div>
+        <div class="mgmt-sub">+75% (½ off) · +$356/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$11.85</div>
+        <div class="mgmt-sub">+150% (full) · +$711/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on QQQ. RSI 39.0. Delta 0.40 — balanced directional exposure. IV 38%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier1">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>88.1</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$648</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-10</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">3 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$5.47</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$5.44 / $5.51</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">32.7%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,159</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.3%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$547 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.393</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.019900</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-1.2139</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.2276</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $5.47 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.73</div>
+        <div class="mgmt-sub">–50% · –$274/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$9.57</div>
+        <div class="mgmt-sub">+75% (½ off) · +$410/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$13.67</div>
+        <div class="mgmt-sub">+150% (full) · +$820/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on SPY. RSI 40.3. Delta 0.39 — balanced directional exposure. IV 33%. Tight bid/ask — clean fill expected.
+  </div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="tier-section">
+  <div class="tier-header">
+    <span class="tier-badge" style="background:#4f8ef722; border:1px solid #4f8ef7; color:#4f8ef7">7–30 DTE</span>
+    <span class="tier-title">⭐ Tier 2 — Core Plays</span>
+  </div>
+  <div class="tier-desc">Primary recommendations. Best balance of premium, time to develop, and defined risk.</div>
+  <div class="tier-count">2930 candidates scanned → top 12 selected (6 calls + 6 puts)</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#2ecc71;margin-bottom:12px;letter-spacing:0.05em">📈 CALLS — Top 6</div>
+      <div class="trade-cards">
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>69.4</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$253</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-17</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">10 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$4.58</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$4.55 / $4.61</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">34.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,580</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.3%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$458 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.446</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.028000</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2901</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1639</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $4.58 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.52</div>
+        <div class="mgmt-sub">–45% · –$206/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$6.87</div>
+        <div class="mgmt-sub">+50% (½ off) · +$229/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$9.16</div>
+        <div class="mgmt-sub">+100% (full) · +$458/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 5d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.8% today). RSI 50.4. Delta 0.45 — balanced directional exposure. IV 34%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">NFLX</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>69.1</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$98.94 <span style="font-size:12px; color:#e74c3c">▼0.01%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$102</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-17</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">10 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$2.54</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$2.54 / $2.55</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">58.3%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">63.1</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">555</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.4%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$254 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.397</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.040400</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.1876</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.0631</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $2.54 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$1.40</div>
+        <div class="mgmt-sub">–45% · –$114/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$3.81</div>
+        <div class="mgmt-sub">+50% (½ off) · +$127/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$5.08</div>
+        <div class="mgmt-sub">+100% (full) · +$254/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 5d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.0% today). RSI 63.1. Delta 0.40 — balanced directional exposure. Elevated IV (58%) — premium is rich, consider spread. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>68.2</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$660</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-17</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">10 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$7.45</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$7.40 / $7.49</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">24.0%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,575</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$745 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.408</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.015000</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.5300</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.4195</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $7.45 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$4.10</div>
+        <div class="mgmt-sub">–45% · –$335/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$11.18</div>
+        <div class="mgmt-sub">+50% (½ off) · +$372/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$14.90</div>
+        <div class="mgmt-sub">+100% (full) · +$745/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 5d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.9% today). RSI 40.3 — potential oversold bounce. Delta 0.41 — balanced directional exposure. IV 24%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>67.9</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$587</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-17</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">10 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$8.27</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$8.24 / $8.29</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">28.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,105</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.6%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$827 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.428</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.014500</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.5540</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.3772</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $8.27 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$4.55</div>
+        <div class="mgmt-sub">–45% · –$372/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$12.40</div>
+        <div class="mgmt-sub">+50% (½ off) · +$414/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$16.54</div>
+        <div class="mgmt-sub">+100% (full) · +$827/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 5d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-1.3% today). RSI 39.0 — potential oversold bounce. Delta 0.43 — balanced directional exposure. IV 28%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>67.9</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$590</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-17</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">10 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$6.62</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$6.58 / $6.65</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">26.8%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">5,392</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$662 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.379</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.014800</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.5109</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.3657</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $6.62 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$3.64</div>
+        <div class="mgmt-sub">–45% · –$298/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$9.93</div>
+        <div class="mgmt-sub">+50% (½ off) · +$331/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$13.24</div>
+        <div class="mgmt-sub">+100% (full) · +$662/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 5d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-1.3% today). RSI 39.0 — potential oversold bounce. Delta 0.38 — balanced directional exposure. IV 27%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>65.3</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$657</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">8 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$7.94</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$7.92 / $7.96</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">25.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">476</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$794 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.446</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.016300</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.6267</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.3820</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $7.94 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$4.37</div>
+        <div class="mgmt-sub">–45% · –$357/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$11.91</div>
+        <div class="mgmt-sub">+50% (½ off) · +$397/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$15.88</div>
+        <div class="mgmt-sub">+100% (full) · +$794/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 4d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.9% today). RSI 40.3 — potential oversold bounce. Delta 0.45 — balanced directional exposure. IV 25%. Tight bid/ask — clean fill expected.
+  </div>
+</div></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#e74c3c;margin-bottom:12px;letter-spacing:0.05em">📉 PUTS — Top 6</div>
+      <div class="trade-cards">
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">CVX</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>90.5</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$203.06 <span style="font-size:12px; color:#2ecc71">▲2.12%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$200</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-17</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">10 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$3.08</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$3.01 / $3.14</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">34.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">57.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,096</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">4.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$308 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.375</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.033100</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2092</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1275</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $3.08 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$1.69</div>
+        <div class="mgmt-sub">–45% · –$139/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$4.62</div>
+        <div class="mgmt-sub">+50% (½ off) · +$154/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$6.16</div>
+        <div class="mgmt-sub">+100% (full) · +$308/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 5d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish momentum (+2.1% today). RSI 57.0. Delta 0.38 — balanced directional exposure. IV 34%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>89.9</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$247</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-17</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">10 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$4.28</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$4.23 / $4.32</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">36.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">568</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">2.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$428 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.391</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.025600</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2774</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.1591</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $4.28 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.35</div>
+        <div class="mgmt-sub">–45% · –$193/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$6.42</div>
+        <div class="mgmt-sub">+50% (½ off) · +$214/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$8.56</div>
+        <div class="mgmt-sub">+100% (full) · +$428/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 5d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on IWM. RSI 50.4. Delta 0.39 — balanced directional exposure. IV 36%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>89.0</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$645</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-24</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">17 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$10.04</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$10.02 / $10.06</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">25.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">705</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.4%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1004 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.390</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.010800</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.3734</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.5405</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $10.04 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$5.52</div>
+        <div class="mgmt-sub">–45% · –$452/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$15.06</div>
+        <div class="mgmt-sub">+50% (½ off) · +$502/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$20.08</div>
+        <div class="mgmt-sub">+100% (full) · +$1004/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 8d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on SPY. RSI 40.3. Delta 0.39 — balanced directional exposure. IV 25%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>88.2</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$648</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-17</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">10 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$8.84</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$8.82 / $8.87</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">26.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,441</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.6%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$884 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.416</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.013600</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.5295</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.4214</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $8.84 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$4.86</div>
+        <div class="mgmt-sub">–45% · –$398/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$13.26</div>
+        <div class="mgmt-sub">+50% (½ off) · +$442/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$17.68</div>
+        <div class="mgmt-sub">+100% (full) · +$884/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 5d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on SPY. RSI 40.3. Delta 0.42 — balanced directional exposure. IV 26%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>88.1</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$245</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-01</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">24 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$5.61</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$5.56 / $5.66</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">32.7%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,353</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.8%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$561 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.370</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.018000</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.1553</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.2424</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $5.61 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$3.09</div>
+        <div class="mgmt-sub">–45% · –$252/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$8.42</div>
+        <div class="mgmt-sub">+50% (½ off) · +$280/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$11.22</div>
+        <div class="mgmt-sub">+100% (full) · +$561/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit if flat after 12d</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on IWM. RSI 50.4. Delta 0.37 — balanced directional exposure. IV 33%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier2">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>87.9</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$575</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-04-14</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">7 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$6.96</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$6.94 / $6.99</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">30.6%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">2,805</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.7%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$696 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.391</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.015600</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.6518</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.3089</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $6.96 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$3.48</div>
+        <div class="mgmt-sub">–50% · –$348/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$12.18</div>
+        <div class="mgmt-sub">+75% (½ off) · +$522/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$17.40</div>
+        <div class="mgmt-sub">+150% (full) · +$1044/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit by EOD if no move</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on QQQ. RSI 39.0. Delta 0.39 — balanced directional exposure. IV 31%. Tight bid/ask — clean fill expected.
+  </div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="tier-section">
+  <div class="tier-header">
+    <span class="tier-badge" style="background:#2ecc7122; border:1px solid #2ecc71; color:#2ecc71">30–60 DTE</span>
+    <span class="tier-title">📈 Tier 3 — Swing Plays</span>
+  </div>
+  <div class="tier-desc">Longer conviction plays. Lower urgency — plan entries carefully. Less theta pressure.</div>
+  <div class="tier-count">1987 candidates scanned → top 12 selected (6 calls + 6 puts)</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#2ecc71;margin-bottom:12px;letter-spacing:0.05em">📈 CALLS — Top 6</div>
+      <div class="trade-cards">
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>67.0</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$670</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$10.51</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$10.49 / $10.53</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">19.8%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">509</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.4%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1051 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.377</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.009100</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2317</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.8000</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $10.51 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$6.83</div>
+        <div class="mgmt-sub">–35% · –$368/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$14.19</div>
+        <div class="mgmt-sub">+35% (½ off) · +$368/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$16.82</div>
+        <div class="mgmt-sub">+60% (full) · +$631/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.9% today). RSI 40.3 — potential oversold bounce. Delta 0.38 — balanced directional exposure. Low IV (20%) — cheap premium, good outright entry. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>65.5</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$262</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$4.31</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$4.28 / $4.34</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">26.0%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,054</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.4%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$431 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.327</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.017200</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.1076</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.2917</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $4.31 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$2.80</div>
+        <div class="mgmt-sub">–35% · –$151/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$5.82</div>
+        <div class="mgmt-sub">+35% (½ off) · +$151/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$6.90</div>
+        <div class="mgmt-sub">+60% (full) · +$259/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.8% today). RSI 50.4. Delta 0.33 — balanced directional exposure. IV 26%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>64.2</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$665</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-08</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">31 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$11.27</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$11.12 / $11.43</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">20.7%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">459</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">2.8%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1127 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.411</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.009900</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2724</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.7403</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $11.27 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$7.33</div>
+        <div class="mgmt-sub">–35% · –$394/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$15.21</div>
+        <div class="mgmt-sub">+35% (½ off) · +$394/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$18.03</div>
+        <div class="mgmt-sub">+60% (full) · +$676/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.9% today). RSI 40.3 — potential oversold bounce. Delta 0.41 — balanced directional exposure. IV 21%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">AVGO</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>63.7</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$326.42 <span style="font-size:12px; color:#2ecc71">▲3.80%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$350</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$10.25</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$10.23 / $10.28</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">44.9%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">52.7</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">611</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1025 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.349</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.007800</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2403</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.3895</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $10.25 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$6.66</div>
+        <div class="mgmt-sub">–35% · –$359/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$13.84</div>
+        <div class="mgmt-sub">+35% (½ off) · +$359/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$16.40</div>
+        <div class="mgmt-sub">+60% (full) · +$615/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (+3.8% today). RSI 52.7. Delta 0.35 — balanced directional exposure. IV 45%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>63.6</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$590</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$15.43</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$15.33 / $15.52</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">24.8%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">941</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1543 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.458</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.008500</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2674</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.7437</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $15.43 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$10.03</div>
+        <div class="mgmt-sub">–35% · –$540/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$20.83</div>
+        <div class="mgmt-sub">+35% (½ off) · +$540/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$24.69</div>
+        <div class="mgmt-sub">+60% (full) · +$926/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-1.3% today). RSI 39.0 — potential oversold bounce. Delta 0.46 — balanced directional exposure. IV 25%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SNAP</span>
+      <span class="card-direction-call">📈 CALL</span>
+    </div>
+    <div class="card-score">Score: <span>63.5</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$4.68 <span style="font-size:12px; color:#e74c3c">▼0.74%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$5</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$0.41</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$0.40 / $0.41</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">87.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.7</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">306</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">2.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$41 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">+0.469</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.302000</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.0071</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.0060</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $0.41 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$0.27</div>
+        <div class="mgmt-sub">–35% · –$14/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$0.55</div>
+        <div class="mgmt-sub">+35% (½ off) · +$14/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$0.66</div>
+        <div class="mgmt-sub">+60% (full) · +$25/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Strong upside momentum (-0.7% today). RSI 50.7. Delta 0.47 — balanced directional exposure. Elevated IV (87%) — premium is rich, consider spread. Tight bid/ask — clean fill expected.
+  </div>
+</div></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#e74c3c;margin-bottom:12px;letter-spacing:0.05em">📉 PUTS — Top 6</div>
+      <div class="trade-cards">
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>87.1</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$645</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$14.70</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$14.59 / $14.81</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">23.3%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">613</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1470 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.401</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.007900</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2221</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.8146</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $14.70 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$9.55</div>
+        <div class="mgmt-sub">–35% · –$514/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$19.84</div>
+        <div class="mgmt-sub">+35% (½ off) · +$514/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$23.52</div>
+        <div class="mgmt-sub">+60% (full) · +$882/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on SPY. RSI 40.3. Delta 0.40 — balanced directional exposure. IV 23%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>85.8</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$575</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$16.37</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$16.36 / $16.38</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">27.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">2,208</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1637 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.419</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.007700</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2360</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.7323</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $16.37 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$10.64</div>
+        <div class="mgmt-sub">–35% · –$573/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$22.10</div>
+        <div class="mgmt-sub">+35% (½ off) · +$573/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$26.19</div>
+        <div class="mgmt-sub">+60% (full) · +$982/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on QQQ. RSI 39.0. Delta 0.42 — balanced directional exposure. IV 27%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">SPY</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>85.3</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$652.81 <span style="font-size:12px; color:#e74c3c">▼0.92%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$640</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$13.32</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$13.30 / $13.35</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">24.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">40.3</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">1,583</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.4%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1332 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.366</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.007400</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2266</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.7923</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $13.32 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$8.66</div>
+        <div class="mgmt-sub">–35% · –$466/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$17.98</div>
+        <div class="mgmt-sub">+35% (½ off) · +$466/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$21.31</div>
+        <div class="mgmt-sub">+60% (full) · +$799/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on SPY. RSI 40.3. Delta 0.37 — balanced directional exposure. IV 24%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">QQQ</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>84.3</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$580.85 <span style="font-size:12px; color:#e74c3c">▼1.28%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$570</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$14.45</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$14.37 / $14.54</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">27.5%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">39.0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">610</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">1.2%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$1445 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.381</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.007400</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.2353</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.7145</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $14.45 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$9.39</div>
+        <div class="mgmt-sub">–35% · –$506/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$19.51</div>
+        <div class="mgmt-sub">+35% (½ off) · +$506/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$23.12</div>
+        <div class="mgmt-sub">+60% (full) · +$867/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on QQQ. RSI 39.0. Delta 0.38 — balanced directional exposure. IV 28%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">IWM</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>84.1</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$250.43 <span style="font-size:12px; color:#e74c3c">▼0.76%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$250</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$8.97</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$8.93 / $9.01</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">30.1%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">50.4</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">514</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.9%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$897 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.457</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.016300</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.1146</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.3206</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $8.97 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$5.83</div>
+        <div class="mgmt-sub">–35% · –$314/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$12.11</div>
+        <div class="mgmt-sub">+35% (½ off) · +$314/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$14.35</div>
+        <div class="mgmt-sub">+60% (full) · +$538/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on IWM. RSI 50.4. Delta 0.46 — balanced directional exposure. IV 30%. Tight bid/ask — clean fill expected.
+  </div>
+</div>
+<div class="trade-card card-tier3">
+  <div class="card-top">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="card-symbol">AAPL</span>
+      <span class="card-direction-put">📉 PUT</span>
+    </div>
+    <div class="card-score">Score: <span>84.0</span>/100</div>
+  </div>
+
+  <div class="card-details">
+    <div class="detail-item">
+      <div class="detail-label">Underlying</div>
+      <div class="detail-val">$247.53 <span style="font-size:12px; color:#e74c3c">▼4.38%</span></div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Strike</div>
+      <div class="detail-val">$245</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Expiry</div>
+      <div class="detail-val">2026-05-15</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">DTE</div>
+      <div class="detail-val">38 days</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Entry (Mid)</div>
+      <div class="detail-val" style="color:#4f8ef7">$8.88</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Bid / Ask</div>
+      <div class="detail-val">$8.86 / $8.91</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">IV</div>
+      <div class="detail-val">33.4%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">RSI (14)</div>
+      <div class="detail-val">41.7</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Open Interest</div>
+      <div class="detail-val">0</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Volume</div>
+      <div class="detail-val">583</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Spread</div>
+      <div class="detail-val">0.6%</div>
+    </div>
+    <div class="detail-item">
+      <div class="detail-label">Max Loss</div>
+      <div class="detail-val" style="color:#e74c3c">$888 / contract</div>
+    </div>
+  </div>
+
+  <div class="card-greeks">
+    <div class="greek-item">
+      <div class="greek-label">Δ Delta</div>
+      <div class="greek-val">-0.426</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Γ Gamma</div>
+      <div class="greek-val">0.014700</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">Θ Theta / day</div>
+      <div class="greek-val">-0.1261</div>
+    </div>
+    <div class="greek-item">
+      <div class="greek-label">V Vega / 1% IV</div>
+      <div class="greek-val">0.3132</div>
+    </div>
+  </div>
+
+  <div class="trade-mgmt">
+    <div class="trade-mgmt-header">
+      <span>📋 Trade Management</span>
+      <span style="font-weight:400; color:#8892a4">Entry: $8.88 · Set GTC orders immediately after entry</span>
+    </div>
+    <div class="trade-mgmt-grid">
+      <div class="mgmt-item">
+        <div class="mgmt-label">🛑 Stop Loss</div>
+        <div class="mgmt-price mgmt-stop">$5.77</div>
+        <div class="mgmt-sub">–35% · –$311/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🎯 Target 1 — Take ½ Off</div>
+        <div class="mgmt-price mgmt-target1">$11.99</div>
+        <div class="mgmt-sub">+35% (½ off) · +$311/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">🏁 Target 2 — Full Exit</div>
+        <div class="mgmt-price mgmt-target2">$14.21</div>
+        <div class="mgmt-sub">+60% (full) · +$533/contract</div>
+      </div>
+      <div class="mgmt-item">
+        <div class="mgmt-label">⏱ Time Stop</div>
+        <div class="mgmt-price mgmt-time" style="font-size:13px">Exit when 14 DTE remains</div>
+        <div class="mgmt-sub">Exit regardless of P&amp;L</div>
+      </div>
+    </div>
+    <div class="gtc-note">
+      💡 In Robinhood: after entry, place a <strong>limit sell at Target 1</strong> (GTC) and a <strong>stop-limit at Stop Loss</strong> immediately — so the position manages itself if you step away.
+    </div>
+  </div>
+
+  <div class="card-rationale">
+    <strong>Rationale:</strong> Bearish setup on AAPL. RSI 41.7. Delta 0.43 — balanced directional exposure. IV 33%. Tight bid/ask — clean fill expected.
+  </div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="tier-section" style="margin-top:32px">
+  <div class="tier-header" style="border-left-color:#9b59b6">
+    <div class="tier-title" style="color:#9b59b6">🤖 Paper Trades Placed Today</div>
+    <div class="tier-meta">Alpaca Paper Account · Score threshold: 87.5+ · 1 contract per trade</div>
+  </div>
+  <div style="margin-bottom:12px;font-size:13px;color:#2ecc71;font-weight:600">10 order(s) placed · ~$4949 paper capital deployed</div>
+  <div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:13px">
+    <thead>
+      <tr style="background:#1a1d2e;color:#8892a4;text-transform:uppercase;
+                 font-size:11px;letter-spacing:0.06em">
+        <th style="padding:10px 12px;text-align:left">Symbol</th>
+        <th style="padding:10px 12px;text-align:left">Type</th>
+        <th style="padding:10px 12px;text-align:left">Strike</th>
+        <th style="padding:10px 12px;text-align:left">Expiry</th>
+        <th style="padding:10px 12px;text-align:left">Score</th>
+        <th style="padding:10px 12px;text-align:left">Limit</th>
+        <th style="padding:10px 12px;text-align:left">Cost</th>
+        <th style="padding:10px 12px;text-align:left">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">CVX</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$200</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-10</td>
+          <td style="padding:10px 12px">93.7</td>
+          <td style="padding:10px 12px">$1.68</td>
+          <td style="padding:10px 12px">$168</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">IWM</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$248</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-10</td>
+          <td style="padding:10px 12px">91.2</td>
+          <td style="padding:10px 12px">$3.00</td>
+          <td style="padding:10px 12px">$300</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">IWM</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$248</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-13</td>
+          <td style="padding:10px 12px">90.6</td>
+          <td style="padding:10px 12px">$3.54</td>
+          <td style="padding:10px 12px">$354</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">CVX</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$200</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-17</td>
+          <td style="padding:10px 12px">90.5</td>
+          <td style="padding:10px 12px">$3.08</td>
+          <td style="padding:10px 12px">$308</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">IWM</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$247</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-17</td>
+          <td style="padding:10px 12px">89.9</td>
+          <td style="padding:10px 12px">$4.28</td>
+          <td style="padding:10px 12px">$428</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">SPY</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$649</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-09</td>
+          <td style="padding:10px 12px">89.2</td>
+          <td style="padding:10px 12px">$4.82</td>
+          <td style="padding:10px 12px">$482</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">SPY</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$645</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-24</td>
+          <td style="padding:10px 12px">89.0</td>
+          <td style="padding:10px 12px">$10.04</td>
+          <td style="padding:10px 12px">$1004</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">QQQ</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$577</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-09</td>
+          <td style="padding:10px 12px">88.3</td>
+          <td style="padding:10px 12px">$4.74</td>
+          <td style="padding:10px 12px">$474</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">SPY</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$648</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-17</td>
+          <td style="padding:10px 12px">88.2</td>
+          <td style="padding:10px 12px">$8.84</td>
+          <td style="padding:10px 12px">$884</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #2d3154">
+          <td style="padding:10px 12px;font-weight:600">SPY</td>
+          <td style="padding:10px 12px;color:#4f8ef7">PUT</td>
+          <td style="padding:10px 12px">$648</td>
+          <td style="padding:10px 12px;color:#8892a4">2026-04-10</td>
+          <td style="padding:10px 12px">88.1</td>
+          <td style="padding:10px 12px">$5.47</td>
+          <td style="padding:10px 12px">$547</td>
+          <td style="padding:10px 12px"><span style="color:#2ecc71;font-weight:600">✓ PENDING_NEW</span></td>
+        </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>Trifecta Holdings — Personal Trading</strong><br>
+  Data sourced from Alpaca Market Data API (Polygon.io) · Execution via Robinhood (manual)<br>
+  <div class="disclaimer">
+    This report is for personal informational use only. Not financial advice.
+    All options trading involves substantial risk of loss. Max loss on any options position = premium paid.
+    Past performance does not guarantee future results.
+  </div>
+</div>
+
+</body>
+</html>
