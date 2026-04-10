@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trifecta Trades</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e8eaf0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container { text-align: center; max-width: 480px; padding: 24px; }
+  .logo { font-size: 12px; color: #8892a4; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+  h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #8892a4; margin-bottom: 48px; }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 18px 24px;
+    margin-bottom: 16px;
+    background: #1a1d2e;
+    border: 1px solid #2d3154;
+    border-radius: 10px;
+    color: #e8eaf0;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: #252a3a; border-color: #4f8ef7; }
+  .btn .icon { margin-right: 10px; }
+  .btn .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+  .badge-live { background: rgba(46,204,113,0.15); color: #2ecc71; }
+  .badge-soon { background: rgba(240,192,64,0.15); color: #f0c040; }
+  footer { margin-top: 48px; font-size: 12px; color: #8892a4; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">Trifecta Tech HQ</div>
+  <h1>Trifecta Trades</h1>
+  <p class="subtitle">Options & futures trade recommendations</p>
+
+  <a href="options.html" class="btn">
+    <span class="icon">📊</span> Recommended Options
+    <span class="badge badge-live">LIVE</span>
+  </a>
+
+  <a href="futures.html" class="btn" style="opacity: 0.5; pointer-events: none;">
+    <span class="icon">🔮</span> Recommended Futures
+    <span class="badge badge-soon">COMING SOON</span>
+  </a>
+
+  <footer>&copy; 2026 Trifecta Tech HQ &middot; For research purposes only</footer>
+</div>
+</body>
+</html>
