@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>sim_10k — Trifecta Schwab</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --panel-border: #30363d;
+  --text: #c9d1d9;
+  --text-dim: #8b949e;
+  --accent: #58a6ff;
+  --positive: #3fb950;
+  --negative: #f85149;
+  --warning: #d29922;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+.banner {
+  background: var(--warning);
+  color: #000;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+header {
+  border-bottom: 1px solid var(--panel-border);
+  padding: 1rem;
+}
+header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+}
+nav a {
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: 1rem;
+  font-size: 0.95rem;
+}
+nav a:hover { text-decoration: underline; }
+main {
+  max-width: 1100px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+}
+h2 {
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 0.4rem;
+  margin-top: 2rem;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+dl.stats {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+dl.stats dt { color: var(--text-dim); }
+dl.stats dd {
+  margin: 0;
+  text-align: right;
+  font-feature-settings: "tnum";
+}
+.positive { color: var(--positive); }
+.negative { color: var(--negative); }
+.muted    { color: var(--text-dim); }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--panel-border);
+  vertical-align: top;
+}
+th {
+  color: var(--text-dim);
+  font-weight: 600;
+  white-space: nowrap;
+}
+td.num { text-align: right; }
+td.legs { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85rem; }
+.empty {
+  color: var(--text-dim);
+  font-style: italic;
+}
+.chart-wrap {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+  height: 360px;
+}
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.summary-row .stat {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+}
+.summary-row .stat-label {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.summary-row .stat-value {
+  font-size: 1.4rem;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.2rem;
+}
+.bias-chip {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+.bias-chip.bullish { color: var(--positive); }
+.bias-chip.bearish { color: var(--negative); }
+.bias-chip.neutral { color: var(--text-dim); }
+.bias-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 0.85rem 1.1rem;
+  margin: 1rem 0 1.4rem 0;
+  font-variant-numeric: tabular-nums;
+}
+.bias-bar .label {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.bias-bar .ticker-change {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.bias-bar .ticker-change .value { font-weight: 600; font-size: 0.95rem; }
+.hub-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 0;
+  list-style: none;
+}
+.hub-list li {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+}
+.hub-list li a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+.hub-list li a:hover { text-decoration: underline; }
+.hub-list li p {
+  margin: 0.4rem 0 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.terminal {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.92rem;
+  white-space: pre-wrap;
+  line-height: 1.45;
+  overflow-x: auto;
+}
+.terminal .rule {
+  color: var(--panel-border);
+  letter-spacing: -0.05em;
+}
+.terminal .label { color: var(--text-dim); }
+.terminal .position-block { margin-top: 0.7rem; }
+.pick-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.pick-card.put { border-left-color: var(--negative); }
+.pick-card.call { border-left-color: var(--positive); }
+.pick-card .pick-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+.pick-card .pick-header .ticker {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.pick-card .pick-header .strategy-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.pick-card.put .pick-header .strategy-badge {
+  background: rgba(248, 81, 73, 0.15);
+  color: var(--negative);
+}
+.pick-card.call .pick-header .strategy-badge {
+  background: rgba(63, 185, 80, 0.15);
+  color: var(--positive);
+}
+.pick-card .pick-header .score { color: var(--text-dim); font-size: 0.9rem; }
+.pick-card .pick-header .score b { color: var(--text); font-size: 1.05rem; }
+.pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem 1.2rem;
+  margin: 0.5rem 0 1rem 0;
+  font-size: 0.9rem;
+}
+.pick-grid .field { display: flex; flex-direction: column; gap: 0.1rem; }
+.pick-grid .field .name {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.pick-grid .field .value { font-variant-numeric: tabular-nums; font-weight: 600; }
+.pick-grid .field .value.danger { color: var(--negative); }
+.trade-management {
+  background: rgba(88, 166, 255, 0.04);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+}
+.trade-management .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.trade-management .header .title {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.trade-management .header .entry { color: var(--text-dim); font-size: 0.85rem; }
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+.tier-cell {
+  background: var(--bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  padding: 0.5rem 0.7rem;
+}
+.tier-cell .head {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+.tier-cell .head.stop  { color: var(--negative); }
+.tier-cell .head.tier  { color: var(--accent); }
+.tier-cell .head.target { color: var(--positive); }
+.tier-cell .head.time  { color: var(--warning); }
+.tier-cell .price { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 0.95rem; }
+.tier-cell .delta { font-size: 0.78rem; color: var(--text-dim); }
+.rationale { font-size: 0.88rem; color: var(--text-dim); margin: 0.3rem 0 0 0; }
+.rationale b { color: var(--text); }
+
+/* Landing-page layout — used by the schwab-overview page only.
+   Mirrors the visual style of trifecta-trades-live's index.html: centered
+   column with branded header + large action-button cards. */
+.landing {
+  max-width: 720px;
+  margin: 4rem auto 2rem auto;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+.landing .eyebrow {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 0.6rem 0;
+}
+.landing h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem 0;
+  color: var(--text);
+}
+.landing .tagline {
+  color: var(--text-dim);
+  font-size: 1.05rem;
+  margin: 0 0 2.5rem 0;
+}
+.landing-bias {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1.6rem 0;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+.landing-bias .bias-chip { font-size: 0.72rem; padding: 0.18rem 0.6rem; }
+.action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin: 0 0 2rem 0;
+}
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.action-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.action-card .icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.action-card .label {
+  flex: 1;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.action-card .label .sub {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  margin-top: 0.15rem;
+}
+.action-card .pill {
+  flex-shrink: 0;
+  padding: 0.22rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.action-card .pill.live {
+  background: rgba(63, 185, 80, 0.15);
+  color: var(--positive);
+}
+.action-card .pill.stale {
+  background: rgba(210, 153, 34, 0.15);
+  color: var(--warning);
+}
+.action-card .pill.empty {
+  background: rgba(139, 148, 158, 0.15);
+  color: var(--text-dim);
+}
+.landing .secondary-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.88rem;
+  margin-top: 0.5rem;
+}
+.landing .secondary-links a { color: var(--text-dim); text-decoration: none; }
+.landing .secondary-links a:hover { color: var(--accent); text-decoration: underline; }
+footer {
+  margin-top: 3rem;
+  padding: 1rem;
+  border-top: 1px solid var(--panel-border);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  table { font-size: 0.8rem; }
+  th, td { padding: 0.4rem 0.4rem; }
+}
+</style>
+</head>
+<body>
+<div class="banner">SIMULATED — not real money. Per-account stats are virtual.</div>
+<header>
+<h1>Trifecta Schwab Options</h1>
+<nav>
+<a href="schwab-overview.html">Overview</a>
+<a href="schwab-recommendations.html">Today's picks</a>
+<a href="schwab-by-ticker.html">By ticker</a>
+<a href="schwab-by-strategy.html">By strategy</a>
+<a href="schwab-simulation-10K.html">sim_10k</a>
+<a href="schwab-simulation-100K.html">sim_100k</a>
+</nav>
+</header>
+<main>
+<h2>📊 Position Monitor — sim_10k</h2>
+<p class="muted">Last updated: 2026-05-10 09:35 UTC</p>
+
+<div class="terminal">
+<div class="rule">============================================================</div>  POSITION MONITOR — SIM_10K — 2026-05-10 09:35 UTC
+<div class="rule">============================================================</div>
+
+  <span class="label">Starting capital:</span>  $   10,000.00
+  <span class="label">Current equity:</span>   $   10,000.00
+  <span class="label">Realized P&L (30d):</span> <span class="">$       0.00</span>
+  <span class="label">Win rate (closed):</span> <span class="muted">— no closed trades yet</span>
+<div class="rule">------------------------------------------------------------</div>
+
+  0 open position(s) <span class="muted">— nothing to monitor</span>
+<div class="rule">------------------------------------------------------------</div>
+  <span class="label">Summary:</span>  0 closed  |  0 still open
+<div class="rule">============================================================</div>
+</div>
+
+<h2>Equity curve</h2>
+<div class="chart-wrap">
+  <canvas id="equityChart" data-chart="{&#34;labels&#34;: [&#34;2026-04-11&#34;, &#34;2026-04-12&#34;, &#34;2026-04-13&#34;, &#34;2026-04-14&#34;, &#34;2026-04-15&#34;, &#34;2026-04-16&#34;, &#34;2026-04-17&#34;, &#34;2026-04-18&#34;, &#34;2026-04-19&#34;, &#34;2026-04-20&#34;, &#34;2026-04-21&#34;, &#34;2026-04-22&#34;, &#34;2026-04-23&#34;, &#34;2026-04-24&#34;, &#34;2026-04-25&#34;, &#34;2026-04-26&#34;, &#34;2026-04-27&#34;, &#34;2026-04-28&#34;, &#34;2026-04-29&#34;, &#34;2026-04-30&#34;, &#34;2026-05-01&#34;, &#34;2026-05-02&#34;, &#34;2026-05-03&#34;, &#34;2026-05-04&#34;, &#34;2026-05-05&#34;, &#34;2026-05-06&#34;, &#34;2026-05-07&#34;, &#34;2026-05-08&#34;, &#34;2026-05-09&#34;, &#34;2026-05-10&#34;], &#34;equity&#34;: [10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0, 10000.0]}"></canvas>
+</div>
+
+<h2>Recent activity</h2>
+<table>
+<thead>
+<tr>
+  <th>Time (UTC)</th>
+  <th>Type</th>
+  <th>Ticker</th>
+  <th>Strategy</th>
+  <th>Detail</th>
+  <th>Cycle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>2026-05-10T09:35:45.193006+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $429 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192967+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $427 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192928+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $445 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192889+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $382 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192843+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $361 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192800+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $400 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192761+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $318 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192721+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $439 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192679+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $432 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192625+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $408 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192586+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $374 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192547+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $335 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192508+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $435 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192470+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $377 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192431+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $324 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192393+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $369 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192349+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $428 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192311+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $414 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192273+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $420 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192235+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $345 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192196+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $427 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192153+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $428 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192113+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $378 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192075+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $422 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192037+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $380 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.192000+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $379 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191962+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $426 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191924+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $411 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191885+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $410 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191847+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $402 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191809+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $373 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191770+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $404 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191732+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $382 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191693+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $385 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191640+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $360 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191595+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $419 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191553+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $367 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191515+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $424 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191478+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $357 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191439+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $413 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191402+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $395 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191364+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $340 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191326+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $381 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191288+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $318 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191250+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $418 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191212+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $423 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191174+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $352 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191136+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $407 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191097+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: position cost $356 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+<tr>
+  <td>2026-05-10T09:35:45.191059+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: position cost $412 exceeds 2.0% of equity ($200)</td>
+  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+</tr>
+</tbody>
+</table>
+
+</main>
+<footer>
+Generated 2026-05-10 09:35 UTC.
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"
+        integrity="sha384-Sse/HDqcypGpyTDpvZOJNnG0TT3feGQUkF9H+mnRvic+LjR+K1NhTt8f51KIQ3v3"
+        crossorigin="anonymous"></script>
+<script>
+(function() {
+  var canvas = document.getElementById('equityChart');
+  if (!canvas) return;
+  var raw = canvas.getAttribute('data-chart');
+  if (!raw) return;
+  var data;
+  try { data = JSON.parse(raw); } catch (e) { return; }
+  // eslint-disable-next-line no-undef
+  new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: 'Equity ($)',
+        data: data.equity,
+        borderColor: '#58a6ff',
+        backgroundColor: 'rgba(88, 166, 255, 0.1)',
+        fill: true,
+        tension: 0.1,
+        pointRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
+        y: {
+          ticks: {
+            color: '#8b949e',
+            callback: function(v) { return '$' + v.toLocaleString(); }
+          },
+          grid: { color: '#30363d' }
+        }
+      },
+      plugins: {
+        legend: { labels: { color: '#c9d1d9' } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) { return '$' + ctx.parsed.y.toLocaleString(); }
+          }
+        }
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
