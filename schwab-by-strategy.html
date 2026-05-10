@@ -224,6 +224,50 @@ td.legs { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8
 }
 .terminal .label { color: var(--text-dim); }
 .terminal .position-block { margin-top: 0.7rem; }
+.picks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1rem 0 0 0;
+}
+.picks-grid > .picks-column { min-width: 0; }
+.picks-column-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.4rem 0;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+}
+.picks-column-header.call {
+  background: rgba(63, 185, 80, 0.12);
+  color: var(--positive);
+  border-left: 3px solid var(--positive);
+}
+.picks-column-header.put {
+  background: rgba(248, 81, 73, 0.12);
+  color: var(--negative);
+  border-left: 3px solid var(--negative);
+}
+.picks-column-header.neutral {
+  background: rgba(88, 166, 255, 0.10);
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+}
+.picks-column .pick-card { margin: 0.6rem 0; }
+.picks-column .empty {
+  margin: 0.6rem 0;
+  padding: 1rem;
+  background: var(--panel);
+  border: 1px dashed var(--panel-border);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+@media (max-width: 900px) {
+  .picks-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+}
 .pick-card {
   background: var(--panel);
   border: 1px solid var(--panel-border);
@@ -472,72 +516,11 @@ footer {
 <h3>sim_10k</h3>
 <p class="empty">No trades yet for sim_10k.</p>
 <h3>sim_100k</h3>
-<table>
-<thead>
-<tr>
-  <th>Strategy</th>
-  <th class="num">Total</th>
-  <th class="num">Closed</th>
-  <th class="num">Open</th>
-  <th class="num">Wins</th>
-  <th class="num">Losses</th>
-  <th class="num">Win rate</th>
-  <th class="num">Total P&amp;L</th>
-  <th class="num">Avg win</th>
-  <th class="num">Avg loss</th>
-  <th class="num">Expectancy</th>
-  <th class="num">Profit factor</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>call_credit_spread</td>
-  <td class="num">31</td>
-  <td class="num">0</td>
-  <td class="num">31</td>
-  <td class="num positive">0</td>
-  <td class="num negative">0</td>
-  <td class="num">
-<span class="muted">—</span>  </td>
-  <td class="num ">
-<span class="muted">$0.00</span>  </td>
-  <td class="num muted">
-—  </td>
-  <td class="num muted">
-—  </td>
-  <td class="num ">
-<span class="muted">—</span>  </td>
-  <td class="num">
-        <span class="muted">∞</span>
-  </td>
-</tr>
-<tr>
-  <td>put_credit_spread</td>
-  <td class="num">76</td>
-  <td class="num">0</td>
-  <td class="num">76</td>
-  <td class="num positive">0</td>
-  <td class="num negative">0</td>
-  <td class="num">
-<span class="muted">—</span>  </td>
-  <td class="num ">
-<span class="muted">$0.00</span>  </td>
-  <td class="num muted">
-—  </td>
-  <td class="num muted">
-—  </td>
-  <td class="num ">
-<span class="muted">—</span>  </td>
-  <td class="num">
-        <span class="muted">∞</span>
-  </td>
-</tr>
-</tbody>
-</table>
+<p class="empty">No trades yet for sim_100k.</p>
 
 </main>
 <footer>
-Generated 2026-05-10 09:35 UTC.
+Generated 2026-05-10 23:46 UTC.
 </footer>
 </body>
 </html>

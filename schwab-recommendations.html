@@ -224,6 +224,50 @@ td.legs { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8
 }
 .terminal .label { color: var(--text-dim); }
 .terminal .position-block { margin-top: 0.7rem; }
+.picks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1rem 0 0 0;
+}
+.picks-grid > .picks-column { min-width: 0; }
+.picks-column-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.4rem 0;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+}
+.picks-column-header.call {
+  background: rgba(63, 185, 80, 0.12);
+  color: var(--positive);
+  border-left: 3px solid var(--positive);
+}
+.picks-column-header.put {
+  background: rgba(248, 81, 73, 0.12);
+  color: var(--negative);
+  border-left: 3px solid var(--negative);
+}
+.picks-column-header.neutral {
+  background: rgba(88, 166, 255, 0.10);
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+}
+.picks-column .pick-card { margin: 0.6rem 0; }
+.picks-column .empty {
+  margin: 0.6rem 0;
+  padding: 1rem;
+  background: var(--panel);
+  border: 1px dashed var(--panel-border);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+@media (max-width: 900px) {
+  .picks-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+}
 .pick-card {
   background: var(--panel);
   border: 1px solid var(--panel-border);
@@ -475,7 +519,7 @@ footer {
 <div class="bias-bar">
   <div class="ticker-change">
     <span class="label">Scan generated</span>
-    <span class="value">2026-05-10T09:35:42.095855+00:00</span>
+    <span class="value">2026-05-10T23:46:38.364093+00:00</span>
   </div>
   <div class="ticker-change">
     <span class="label">Market bias</span>
@@ -509,9 +553,630 @@ footer {
 </p>
 
 <p class="muted">
-  20 candidates ranked by score · cycle <code>scan-20260510T093542Z-13da57f6</code> · type each row into thinkorswim by hand.
+  20 candidates ranked by score · cycle <code>scan-20260510T234638Z-894544dd</code> · type each row into thinkorswim by hand.
 </p>
 
+
+
+<div class="picks-grid">
+  <div class="picks-column">
+    <h3 class="picks-column-header call">📈 CALLS — Top 6</h3>
+<div class="pick-card call">
+  <div class="pick-header">
+    <div>
+      <span class="ticker">SPY</span>
+      <span class="strategy-badge">
+📈 CALL CREDIT SPREAD
+      </span>
+    </div>
+    <div class="score">Score: <b>84.0</b>/100</div>
+  </div>
+
+
+  <div class="pick-grid">
+    <div class="field">
+      <span class="name">Short strike</span>
+      <span class="value">$755</span>
+    </div>
+    <div class="field">
+      <span class="name">Long strike</span>
+      <span class="value">$760</span>
+    </div>
+    <div class="field">
+      <span class="name">Spread width</span>
+      <span class="value">$5</span>
+    </div>
+    <div class="field">
+      <span class="name">Expiry</span>
+      <span class="value">2026-06-12</span>
+    </div>
+    <div class="field">
+      <span class="name">DTE</span>
+      <span class="value">33 days</span>
+    </div>
+    <div class="field">
+      <span class="name">Net credit</span>
+      <span class="value positive">$1.59</span>
+    </div>
+    <div class="field">
+      <span class="name">Max loss</span>
+      <span class="value danger">$341 / contract</span>
+    </div>
+    <div class="field">
+      <span class="name">Short bid/ask</span>
+      <span class="value">$6.20 / $6.25</span>
+    </div>
+    <div class="field">
+      <span class="name">Short Δ</span>
+      <span class="value">+0.31</span>
+    </div>
+    <div class="field">
+      <span class="name">IV rank</span>
+      <span class="value">40</span>
+    </div>
+    <div class="field">
+      <span class="name">Long bid/ask</span>
+      <span class="value">$4.57 / $4.61</span>
+    </div>
+  </div>
+
+  <div class="trade-management">
+    <div class="header">
+      <span class="title">📋 Trade management</span>
+      <span class="entry">
+        Entry: $1.59 credit · Set GTC orders immediately after fill
+      </span>
+    </div>
+    <div class="tier-grid">
+      <div class="tier-cell">
+        <div class="head stop">🛑 Hard stop</div>
+        <div class="price">$4.37</div>
+        <div class="delta">+175% buyback (max loss)</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 1 (25%)</div>
+        <div class="price">$1.19</div>
+        <div class="delta">Close 25% · stop → BE</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 2 (50%)</div>
+        <div class="price">$0.80</div>
+        <div class="delta">Close 25% · lock 25%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 3 (75%)</div>
+        <div class="price">$0.40</div>
+        <div class="delta">Close 25% · lock 50%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head target">🏁 Tier 4 (90%)</div>
+        <div class="price">$0.16</div>
+        <div class="delta">Close remainder</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head time">⏱ Time stop</div>
+        <div class="price">21 DTE</div>
+        <div class="delta">Exit regardless of P&L</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="rationale"><b>Rationale:</b> CCS SPY 755/760C 2026-06-12 for $1.59 credit (IVR 40, |Δ| 0.31)</p>
+</div>
+<div class="pick-card call">
+  <div class="pick-header">
+    <div>
+      <span class="ticker">QQQ</span>
+      <span class="strategy-badge">
+📈 CALL CREDIT SPREAD
+      </span>
+    </div>
+    <div class="score">Score: <b>83.3</b>/100</div>
+  </div>
+
+
+  <div class="pick-grid">
+    <div class="field">
+      <span class="name">Short strike</span>
+      <span class="value">$740</span>
+    </div>
+    <div class="field">
+      <span class="name">Long strike</span>
+      <span class="value">$745</span>
+    </div>
+    <div class="field">
+      <span class="name">Spread width</span>
+      <span class="value">$5</span>
+    </div>
+    <div class="field">
+      <span class="name">Expiry</span>
+      <span class="value">2026-06-18</span>
+    </div>
+    <div class="field">
+      <span class="name">DTE</span>
+      <span class="value">39 days</span>
+    </div>
+    <div class="field">
+      <span class="name">Net credit</span>
+      <span class="value positive">$1.11</span>
+    </div>
+    <div class="field">
+      <span class="name">Max loss</span>
+      <span class="value danger">$389 / contract</span>
+    </div>
+    <div class="field">
+      <span class="name">Short bid/ask</span>
+      <span class="value">$8.89 / $9.25</span>
+    </div>
+    <div class="field">
+      <span class="name">Short Δ</span>
+      <span class="value">+0.30</span>
+    </div>
+    <div class="field">
+      <span class="name">IV rank</span>
+      <span class="value">40</span>
+    </div>
+    <div class="field">
+      <span class="name">Long bid/ask</span>
+      <span class="value">$7.65 / $7.78</span>
+    </div>
+  </div>
+
+  <div class="trade-management">
+    <div class="header">
+      <span class="title">📋 Trade management</span>
+      <span class="entry">
+        Entry: $1.11 credit · Set GTC orders immediately after fill
+      </span>
+    </div>
+    <div class="tier-grid">
+      <div class="tier-cell">
+        <div class="head stop">🛑 Hard stop</div>
+        <div class="price">$3.05</div>
+        <div class="delta">+175% buyback (max loss)</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 1 (25%)</div>
+        <div class="price">$0.83</div>
+        <div class="delta">Close 25% · stop → BE</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 2 (50%)</div>
+        <div class="price">$0.56</div>
+        <div class="delta">Close 25% · lock 25%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 3 (75%)</div>
+        <div class="price">$0.28</div>
+        <div class="delta">Close 25% · lock 50%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head target">🏁 Tier 4 (90%)</div>
+        <div class="price">$0.11</div>
+        <div class="delta">Close remainder</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head time">⏱ Time stop</div>
+        <div class="price">21 DTE</div>
+        <div class="delta">Exit regardless of P&L</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="rationale"><b>Rationale:</b> CCS QQQ 740/745C 2026-06-18 for $1.11 credit (IVR 40, |Δ| 0.30)</p>
+</div>
+<div class="pick-card call">
+  <div class="pick-header">
+    <div>
+      <span class="ticker">IWM</span>
+      <span class="strategy-badge">
+📈 CALL CREDIT SPREAD
+      </span>
+    </div>
+    <div class="score">Score: <b>83.3</b>/100</div>
+  </div>
+
+
+  <div class="pick-grid">
+    <div class="field">
+      <span class="name">Short strike</span>
+      <span class="value">$295</span>
+    </div>
+    <div class="field">
+      <span class="name">Long strike</span>
+      <span class="value">$300</span>
+    </div>
+    <div class="field">
+      <span class="name">Spread width</span>
+      <span class="value">$5</span>
+    </div>
+    <div class="field">
+      <span class="name">Expiry</span>
+      <span class="value">2026-06-18</span>
+    </div>
+    <div class="field">
+      <span class="name">DTE</span>
+      <span class="value">39 days</span>
+    </div>
+    <div class="field">
+      <span class="name">Net credit</span>
+      <span class="value positive">$1.30</span>
+    </div>
+    <div class="field">
+      <span class="name">Max loss</span>
+      <span class="value danger">$370 / contract</span>
+    </div>
+    <div class="field">
+      <span class="name">Short bid/ask</span>
+      <span class="value">$3.75 / $3.83</span>
+    </div>
+    <div class="field">
+      <span class="name">Short Δ</span>
+      <span class="value">+0.30</span>
+    </div>
+    <div class="field">
+      <span class="name">IV rank</span>
+      <span class="value">40</span>
+    </div>
+    <div class="field">
+      <span class="name">Long bid/ask</span>
+      <span class="value">$2.38 / $2.45</span>
+    </div>
+  </div>
+
+  <div class="trade-management">
+    <div class="header">
+      <span class="title">📋 Trade management</span>
+      <span class="entry">
+        Entry: $1.30 credit · Set GTC orders immediately after fill
+      </span>
+    </div>
+    <div class="tier-grid">
+      <div class="tier-cell">
+        <div class="head stop">🛑 Hard stop</div>
+        <div class="price">$3.58</div>
+        <div class="delta">+175% buyback (max loss)</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 1 (25%)</div>
+        <div class="price">$0.98</div>
+        <div class="delta">Close 25% · stop → BE</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 2 (50%)</div>
+        <div class="price">$0.65</div>
+        <div class="delta">Close 25% · lock 25%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 3 (75%)</div>
+        <div class="price">$0.33</div>
+        <div class="delta">Close 25% · lock 50%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head target">🏁 Tier 4 (90%)</div>
+        <div class="price">$0.13</div>
+        <div class="delta">Close remainder</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head time">⏱ Time stop</div>
+        <div class="price">21 DTE</div>
+        <div class="delta">Exit regardless of P&L</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="rationale"><b>Rationale:</b> CCS IWM 295/300C 2026-06-18 for $1.30 credit (IVR 40, |Δ| 0.30)</p>
+</div>
+<div class="pick-card call">
+  <div class="pick-header">
+    <div>
+      <span class="ticker">SPY</span>
+      <span class="strategy-badge">
+📈 CALL CREDIT SPREAD
+      </span>
+    </div>
+    <div class="score">Score: <b>82.8</b>/100</div>
+  </div>
+
+
+  <div class="pick-grid">
+    <div class="field">
+      <span class="name">Short strike</span>
+      <span class="value">$755</span>
+    </div>
+    <div class="field">
+      <span class="name">Long strike</span>
+      <span class="value">$760</span>
+    </div>
+    <div class="field">
+      <span class="name">Spread width</span>
+      <span class="value">$5</span>
+    </div>
+    <div class="field">
+      <span class="name">Expiry</span>
+      <span class="value">2026-06-18</span>
+    </div>
+    <div class="field">
+      <span class="name">DTE</span>
+      <span class="value">39 days</span>
+    </div>
+    <div class="field">
+      <span class="name">Net credit</span>
+      <span class="value positive">$1.68</span>
+    </div>
+    <div class="field">
+      <span class="name">Max loss</span>
+      <span class="value danger">$332 / contract</span>
+    </div>
+    <div class="field">
+      <span class="name">Short bid/ask</span>
+      <span class="value">$7.27 / $7.32</span>
+    </div>
+    <div class="field">
+      <span class="name">Short Δ</span>
+      <span class="value">+0.32</span>
+    </div>
+    <div class="field">
+      <span class="name">IV rank</span>
+      <span class="value">40</span>
+    </div>
+    <div class="field">
+      <span class="name">Long bid/ask</span>
+      <span class="value">$5.55 / $5.59</span>
+    </div>
+  </div>
+
+  <div class="trade-management">
+    <div class="header">
+      <span class="title">📋 Trade management</span>
+      <span class="entry">
+        Entry: $1.68 credit · Set GTC orders immediately after fill
+      </span>
+    </div>
+    <div class="tier-grid">
+      <div class="tier-cell">
+        <div class="head stop">🛑 Hard stop</div>
+        <div class="price">$4.62</div>
+        <div class="delta">+175% buyback (max loss)</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 1 (25%)</div>
+        <div class="price">$1.26</div>
+        <div class="delta">Close 25% · stop → BE</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 2 (50%)</div>
+        <div class="price">$0.84</div>
+        <div class="delta">Close 25% · lock 25%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 3 (75%)</div>
+        <div class="price">$0.42</div>
+        <div class="delta">Close 25% · lock 50%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head target">🏁 Tier 4 (90%)</div>
+        <div class="price">$0.17</div>
+        <div class="delta">Close remainder</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head time">⏱ Time stop</div>
+        <div class="price">21 DTE</div>
+        <div class="delta">Exit regardless of P&L</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="rationale"><b>Rationale:</b> CCS SPY 755/760C 2026-06-18 for $1.68 credit (IVR 40, |Δ| 0.32)</p>
+</div>
+<div class="pick-card call">
+  <div class="pick-header">
+    <div>
+      <span class="ticker">SPY</span>
+      <span class="strategy-badge">
+📈 CALL CREDIT SPREAD
+      </span>
+    </div>
+    <div class="score">Score: <b>81.2</b>/100</div>
+  </div>
+
+
+  <div class="pick-grid">
+    <div class="field">
+      <span class="name">Short strike</span>
+      <span class="value">$760</span>
+    </div>
+    <div class="field">
+      <span class="name">Long strike</span>
+      <span class="value">$765</span>
+    </div>
+    <div class="field">
+      <span class="name">Spread width</span>
+      <span class="value">$5</span>
+    </div>
+    <div class="field">
+      <span class="name">Expiry</span>
+      <span class="value">2026-06-18</span>
+    </div>
+    <div class="field">
+      <span class="name">DTE</span>
+      <span class="value">39 days</span>
+    </div>
+    <div class="field">
+      <span class="name">Net credit</span>
+      <span class="value positive">$1.36</span>
+    </div>
+    <div class="field">
+      <span class="name">Max loss</span>
+      <span class="value danger">$364 / contract</span>
+    </div>
+    <div class="field">
+      <span class="name">Short bid/ask</span>
+      <span class="value">$5.55 / $5.59</span>
+    </div>
+    <div class="field">
+      <span class="name">Short Δ</span>
+      <span class="value">+0.27</span>
+    </div>
+    <div class="field">
+      <span class="name">IV rank</span>
+      <span class="value">40</span>
+    </div>
+    <div class="field">
+      <span class="name">Long bid/ask</span>
+      <span class="value">$4.15 / $4.19</span>
+    </div>
+  </div>
+
+  <div class="trade-management">
+    <div class="header">
+      <span class="title">📋 Trade management</span>
+      <span class="entry">
+        Entry: $1.36 credit · Set GTC orders immediately after fill
+      </span>
+    </div>
+    <div class="tier-grid">
+      <div class="tier-cell">
+        <div class="head stop">🛑 Hard stop</div>
+        <div class="price">$3.74</div>
+        <div class="delta">+175% buyback (max loss)</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 1 (25%)</div>
+        <div class="price">$1.02</div>
+        <div class="delta">Close 25% · stop → BE</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 2 (50%)</div>
+        <div class="price">$0.68</div>
+        <div class="delta">Close 25% · lock 25%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 3 (75%)</div>
+        <div class="price">$0.34</div>
+        <div class="delta">Close 25% · lock 50%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head target">🏁 Tier 4 (90%)</div>
+        <div class="price">$0.14</div>
+        <div class="delta">Close remainder</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head time">⏱ Time stop</div>
+        <div class="price">21 DTE</div>
+        <div class="delta">Exit regardless of P&L</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="rationale"><b>Rationale:</b> CCS SPY 760/765C 2026-06-18 for $1.36 credit (IVR 40, |Δ| 0.27)</p>
+</div>
+<div class="pick-card call">
+  <div class="pick-header">
+    <div>
+      <span class="ticker">IWM</span>
+      <span class="strategy-badge">
+📈 CALL CREDIT SPREAD
+      </span>
+    </div>
+    <div class="score">Score: <b>80.6</b>/100</div>
+  </div>
+
+
+  <div class="pick-grid">
+    <div class="field">
+      <span class="name">Short strike</span>
+      <span class="value">$294</span>
+    </div>
+    <div class="field">
+      <span class="name">Long strike</span>
+      <span class="value">$299</span>
+    </div>
+    <div class="field">
+      <span class="name">Spread width</span>
+      <span class="value">$5</span>
+    </div>
+    <div class="field">
+      <span class="name">Expiry</span>
+      <span class="value">2026-06-18</span>
+    </div>
+    <div class="field">
+      <span class="name">DTE</span>
+      <span class="value">39 days</span>
+    </div>
+    <div class="field">
+      <span class="name">Net credit</span>
+      <span class="value positive">$1.40</span>
+    </div>
+    <div class="field">
+      <span class="name">Max loss</span>
+      <span class="value danger">$360 / contract</span>
+    </div>
+    <div class="field">
+      <span class="name">Short bid/ask</span>
+      <span class="value">$4.09 / $4.17</span>
+    </div>
+    <div class="field">
+      <span class="name">Short Δ</span>
+      <span class="value">+0.32</span>
+    </div>
+    <div class="field">
+      <span class="name">IV rank</span>
+      <span class="value">40</span>
+    </div>
+    <div class="field">
+      <span class="name">Long bid/ask</span>
+      <span class="value">$2.62 / $2.69</span>
+    </div>
+  </div>
+
+  <div class="trade-management">
+    <div class="header">
+      <span class="title">📋 Trade management</span>
+      <span class="entry">
+        Entry: $1.40 credit · Set GTC orders immediately after fill
+      </span>
+    </div>
+    <div class="tier-grid">
+      <div class="tier-cell">
+        <div class="head stop">🛑 Hard stop</div>
+        <div class="price">$3.85</div>
+        <div class="delta">+175% buyback (max loss)</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 1 (25%)</div>
+        <div class="price">$1.05</div>
+        <div class="delta">Close 25% · stop → BE</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 2 (50%)</div>
+        <div class="price">$0.70</div>
+        <div class="delta">Close 25% · lock 25%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head tier">🎯 Tier 3 (75%)</div>
+        <div class="price">$0.35</div>
+        <div class="delta">Close 25% · lock 50%</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head target">🏁 Tier 4 (90%)</div>
+        <div class="price">$0.14</div>
+        <div class="delta">Close remainder</div>
+      </div>
+      <div class="tier-cell">
+        <div class="head time">⏱ Time stop</div>
+        <div class="price">21 DTE</div>
+        <div class="delta">Exit regardless of P&L</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="rationale"><b>Rationale:</b> CCS IWM 294/299C 2026-06-18 for $1.40 credit (IVR 40, |Δ| 0.32)</p>
+</div>
+  </div>
+
+  <div class="picks-column">
+    <h3 class="picks-column-header put">📉 PUTS — Top 14</h3>
 <div class="pick-card put">
   <div class="pick-header">
     <div>
@@ -715,108 +1380,6 @@ footer {
   </div>
 
   <p class="rationale"><b>Rationale:</b> PCS SPY 718/713P 2026-06-18 for $0.98 credit (IVR 40, |Δ| 0.30)</p>
-</div>
-<div class="pick-card call">
-  <div class="pick-header">
-    <div>
-      <span class="ticker">SPY</span>
-      <span class="strategy-badge">
-📈 CALL CREDIT SPREAD
-      </span>
-    </div>
-    <div class="score">Score: <b>84.0</b>/100</div>
-  </div>
-
-
-  <div class="pick-grid">
-    <div class="field">
-      <span class="name">Short strike</span>
-      <span class="value">$755</span>
-    </div>
-    <div class="field">
-      <span class="name">Long strike</span>
-      <span class="value">$760</span>
-    </div>
-    <div class="field">
-      <span class="name">Spread width</span>
-      <span class="value">$5</span>
-    </div>
-    <div class="field">
-      <span class="name">Expiry</span>
-      <span class="value">2026-06-12</span>
-    </div>
-    <div class="field">
-      <span class="name">DTE</span>
-      <span class="value">33 days</span>
-    </div>
-    <div class="field">
-      <span class="name">Net credit</span>
-      <span class="value positive">$1.59</span>
-    </div>
-    <div class="field">
-      <span class="name">Max loss</span>
-      <span class="value danger">$341 / contract</span>
-    </div>
-    <div class="field">
-      <span class="name">Short bid/ask</span>
-      <span class="value">$6.20 / $6.25</span>
-    </div>
-    <div class="field">
-      <span class="name">Short Δ</span>
-      <span class="value">+0.31</span>
-    </div>
-    <div class="field">
-      <span class="name">IV rank</span>
-      <span class="value">40</span>
-    </div>
-    <div class="field">
-      <span class="name">Long bid/ask</span>
-      <span class="value">$4.57 / $4.61</span>
-    </div>
-  </div>
-
-  <div class="trade-management">
-    <div class="header">
-      <span class="title">📋 Trade management</span>
-      <span class="entry">
-        Entry: $1.59 credit · Set GTC orders immediately after fill
-      </span>
-    </div>
-    <div class="tier-grid">
-      <div class="tier-cell">
-        <div class="head stop">🛑 Hard stop</div>
-        <div class="price">$4.37</div>
-        <div class="delta">+175% buyback (max loss)</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 1 (25%)</div>
-        <div class="price">$1.19</div>
-        <div class="delta">Close 25% · stop → BE</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 2 (50%)</div>
-        <div class="price">$0.80</div>
-        <div class="delta">Close 25% · lock 25%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 3 (75%)</div>
-        <div class="price">$0.40</div>
-        <div class="delta">Close 25% · lock 50%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head target">🏁 Tier 4 (90%)</div>
-        <div class="price">$0.16</div>
-        <div class="delta">Close remainder</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head time">⏱ Time stop</div>
-        <div class="price">21 DTE</div>
-        <div class="delta">Exit regardless of P&L</div>
-      </div>
-    </div>
-  </div>
-
-  <p class="rationale"><b>Rationale:</b> CCS SPY 755/760C 2026-06-12 for $1.59 credit (IVR 40, |Δ| 0.31)</p>
 </div>
 <div class="pick-card put">
   <div class="pick-header">
@@ -1226,210 +1789,6 @@ footer {
 
   <p class="rationale"><b>Rationale:</b> PCS IWM 273/268P 2026-06-18 for $1.04 credit (IVR 40, |Δ| 0.29)</p>
 </div>
-<div class="pick-card call">
-  <div class="pick-header">
-    <div>
-      <span class="ticker">QQQ</span>
-      <span class="strategy-badge">
-📈 CALL CREDIT SPREAD
-      </span>
-    </div>
-    <div class="score">Score: <b>83.3</b>/100</div>
-  </div>
-
-
-  <div class="pick-grid">
-    <div class="field">
-      <span class="name">Short strike</span>
-      <span class="value">$740</span>
-    </div>
-    <div class="field">
-      <span class="name">Long strike</span>
-      <span class="value">$745</span>
-    </div>
-    <div class="field">
-      <span class="name">Spread width</span>
-      <span class="value">$5</span>
-    </div>
-    <div class="field">
-      <span class="name">Expiry</span>
-      <span class="value">2026-06-18</span>
-    </div>
-    <div class="field">
-      <span class="name">DTE</span>
-      <span class="value">39 days</span>
-    </div>
-    <div class="field">
-      <span class="name">Net credit</span>
-      <span class="value positive">$1.11</span>
-    </div>
-    <div class="field">
-      <span class="name">Max loss</span>
-      <span class="value danger">$389 / contract</span>
-    </div>
-    <div class="field">
-      <span class="name">Short bid/ask</span>
-      <span class="value">$8.89 / $9.25</span>
-    </div>
-    <div class="field">
-      <span class="name">Short Δ</span>
-      <span class="value">+0.30</span>
-    </div>
-    <div class="field">
-      <span class="name">IV rank</span>
-      <span class="value">40</span>
-    </div>
-    <div class="field">
-      <span class="name">Long bid/ask</span>
-      <span class="value">$7.65 / $7.78</span>
-    </div>
-  </div>
-
-  <div class="trade-management">
-    <div class="header">
-      <span class="title">📋 Trade management</span>
-      <span class="entry">
-        Entry: $1.11 credit · Set GTC orders immediately after fill
-      </span>
-    </div>
-    <div class="tier-grid">
-      <div class="tier-cell">
-        <div class="head stop">🛑 Hard stop</div>
-        <div class="price">$3.05</div>
-        <div class="delta">+175% buyback (max loss)</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 1 (25%)</div>
-        <div class="price">$0.83</div>
-        <div class="delta">Close 25% · stop → BE</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 2 (50%)</div>
-        <div class="price">$0.56</div>
-        <div class="delta">Close 25% · lock 25%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 3 (75%)</div>
-        <div class="price">$0.28</div>
-        <div class="delta">Close 25% · lock 50%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head target">🏁 Tier 4 (90%)</div>
-        <div class="price">$0.11</div>
-        <div class="delta">Close remainder</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head time">⏱ Time stop</div>
-        <div class="price">21 DTE</div>
-        <div class="delta">Exit regardless of P&L</div>
-      </div>
-    </div>
-  </div>
-
-  <p class="rationale"><b>Rationale:</b> CCS QQQ 740/745C 2026-06-18 for $1.11 credit (IVR 40, |Δ| 0.30)</p>
-</div>
-<div class="pick-card call">
-  <div class="pick-header">
-    <div>
-      <span class="ticker">IWM</span>
-      <span class="strategy-badge">
-📈 CALL CREDIT SPREAD
-      </span>
-    </div>
-    <div class="score">Score: <b>83.3</b>/100</div>
-  </div>
-
-
-  <div class="pick-grid">
-    <div class="field">
-      <span class="name">Short strike</span>
-      <span class="value">$295</span>
-    </div>
-    <div class="field">
-      <span class="name">Long strike</span>
-      <span class="value">$300</span>
-    </div>
-    <div class="field">
-      <span class="name">Spread width</span>
-      <span class="value">$5</span>
-    </div>
-    <div class="field">
-      <span class="name">Expiry</span>
-      <span class="value">2026-06-18</span>
-    </div>
-    <div class="field">
-      <span class="name">DTE</span>
-      <span class="value">39 days</span>
-    </div>
-    <div class="field">
-      <span class="name">Net credit</span>
-      <span class="value positive">$1.30</span>
-    </div>
-    <div class="field">
-      <span class="name">Max loss</span>
-      <span class="value danger">$370 / contract</span>
-    </div>
-    <div class="field">
-      <span class="name">Short bid/ask</span>
-      <span class="value">$3.75 / $3.83</span>
-    </div>
-    <div class="field">
-      <span class="name">Short Δ</span>
-      <span class="value">+0.30</span>
-    </div>
-    <div class="field">
-      <span class="name">IV rank</span>
-      <span class="value">40</span>
-    </div>
-    <div class="field">
-      <span class="name">Long bid/ask</span>
-      <span class="value">$2.38 / $2.45</span>
-    </div>
-  </div>
-
-  <div class="trade-management">
-    <div class="header">
-      <span class="title">📋 Trade management</span>
-      <span class="entry">
-        Entry: $1.30 credit · Set GTC orders immediately after fill
-      </span>
-    </div>
-    <div class="tier-grid">
-      <div class="tier-cell">
-        <div class="head stop">🛑 Hard stop</div>
-        <div class="price">$3.58</div>
-        <div class="delta">+175% buyback (max loss)</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 1 (25%)</div>
-        <div class="price">$0.98</div>
-        <div class="delta">Close 25% · stop → BE</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 2 (50%)</div>
-        <div class="price">$0.65</div>
-        <div class="delta">Close 25% · lock 25%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 3 (75%)</div>
-        <div class="price">$0.33</div>
-        <div class="delta">Close 25% · lock 50%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head target">🏁 Tier 4 (90%)</div>
-        <div class="price">$0.13</div>
-        <div class="delta">Close remainder</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head time">⏱ Time stop</div>
-        <div class="price">21 DTE</div>
-        <div class="delta">Exit regardless of P&L</div>
-      </div>
-    </div>
-  </div>
-
-  <p class="rationale"><b>Rationale:</b> CCS IWM 295/300C 2026-06-18 for $1.30 credit (IVR 40, |Δ| 0.30)</p>
-</div>
 <div class="pick-card put">
   <div class="pick-header">
     <div>
@@ -1531,108 +1890,6 @@ footer {
   </div>
 
   <p class="rationale"><b>Rationale:</b> PCS IWM 274/269P 2026-06-18 for $1.10 credit (IVR 40, |Δ| 0.31)</p>
-</div>
-<div class="pick-card call">
-  <div class="pick-header">
-    <div>
-      <span class="ticker">SPY</span>
-      <span class="strategy-badge">
-📈 CALL CREDIT SPREAD
-      </span>
-    </div>
-    <div class="score">Score: <b>82.8</b>/100</div>
-  </div>
-
-
-  <div class="pick-grid">
-    <div class="field">
-      <span class="name">Short strike</span>
-      <span class="value">$755</span>
-    </div>
-    <div class="field">
-      <span class="name">Long strike</span>
-      <span class="value">$760</span>
-    </div>
-    <div class="field">
-      <span class="name">Spread width</span>
-      <span class="value">$5</span>
-    </div>
-    <div class="field">
-      <span class="name">Expiry</span>
-      <span class="value">2026-06-18</span>
-    </div>
-    <div class="field">
-      <span class="name">DTE</span>
-      <span class="value">39 days</span>
-    </div>
-    <div class="field">
-      <span class="name">Net credit</span>
-      <span class="value positive">$1.68</span>
-    </div>
-    <div class="field">
-      <span class="name">Max loss</span>
-      <span class="value danger">$332 / contract</span>
-    </div>
-    <div class="field">
-      <span class="name">Short bid/ask</span>
-      <span class="value">$7.27 / $7.32</span>
-    </div>
-    <div class="field">
-      <span class="name">Short Δ</span>
-      <span class="value">+0.32</span>
-    </div>
-    <div class="field">
-      <span class="name">IV rank</span>
-      <span class="value">40</span>
-    </div>
-    <div class="field">
-      <span class="name">Long bid/ask</span>
-      <span class="value">$5.55 / $5.59</span>
-    </div>
-  </div>
-
-  <div class="trade-management">
-    <div class="header">
-      <span class="title">📋 Trade management</span>
-      <span class="entry">
-        Entry: $1.68 credit · Set GTC orders immediately after fill
-      </span>
-    </div>
-    <div class="tier-grid">
-      <div class="tier-cell">
-        <div class="head stop">🛑 Hard stop</div>
-        <div class="price">$4.62</div>
-        <div class="delta">+175% buyback (max loss)</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 1 (25%)</div>
-        <div class="price">$1.26</div>
-        <div class="delta">Close 25% · stop → BE</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 2 (50%)</div>
-        <div class="price">$0.84</div>
-        <div class="delta">Close 25% · lock 25%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 3 (75%)</div>
-        <div class="price">$0.42</div>
-        <div class="delta">Close 25% · lock 50%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head target">🏁 Tier 4 (90%)</div>
-        <div class="price">$0.17</div>
-        <div class="delta">Close remainder</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head time">⏱ Time stop</div>
-        <div class="price">21 DTE</div>
-        <div class="delta">Exit regardless of P&L</div>
-      </div>
-    </div>
-  </div>
-
-  <p class="rationale"><b>Rationale:</b> CCS SPY 755/760C 2026-06-18 for $1.68 credit (IVR 40, |Δ| 0.32)</p>
 </div>
 <div class="pick-card put">
   <div class="pick-header">
@@ -2144,108 +2401,6 @@ footer {
 
   <p class="rationale"><b>Rationale:</b> PCS IWM 275/270P 2026-06-18 for $1.16 credit (IVR 40, |Δ| 0.33)</p>
 </div>
-<div class="pick-card call">
-  <div class="pick-header">
-    <div>
-      <span class="ticker">SPY</span>
-      <span class="strategy-badge">
-📈 CALL CREDIT SPREAD
-      </span>
-    </div>
-    <div class="score">Score: <b>81.2</b>/100</div>
-  </div>
-
-
-  <div class="pick-grid">
-    <div class="field">
-      <span class="name">Short strike</span>
-      <span class="value">$760</span>
-    </div>
-    <div class="field">
-      <span class="name">Long strike</span>
-      <span class="value">$765</span>
-    </div>
-    <div class="field">
-      <span class="name">Spread width</span>
-      <span class="value">$5</span>
-    </div>
-    <div class="field">
-      <span class="name">Expiry</span>
-      <span class="value">2026-06-18</span>
-    </div>
-    <div class="field">
-      <span class="name">DTE</span>
-      <span class="value">39 days</span>
-    </div>
-    <div class="field">
-      <span class="name">Net credit</span>
-      <span class="value positive">$1.36</span>
-    </div>
-    <div class="field">
-      <span class="name">Max loss</span>
-      <span class="value danger">$364 / contract</span>
-    </div>
-    <div class="field">
-      <span class="name">Short bid/ask</span>
-      <span class="value">$5.55 / $5.59</span>
-    </div>
-    <div class="field">
-      <span class="name">Short Δ</span>
-      <span class="value">+0.27</span>
-    </div>
-    <div class="field">
-      <span class="name">IV rank</span>
-      <span class="value">40</span>
-    </div>
-    <div class="field">
-      <span class="name">Long bid/ask</span>
-      <span class="value">$4.15 / $4.19</span>
-    </div>
-  </div>
-
-  <div class="trade-management">
-    <div class="header">
-      <span class="title">📋 Trade management</span>
-      <span class="entry">
-        Entry: $1.36 credit · Set GTC orders immediately after fill
-      </span>
-    </div>
-    <div class="tier-grid">
-      <div class="tier-cell">
-        <div class="head stop">🛑 Hard stop</div>
-        <div class="price">$3.74</div>
-        <div class="delta">+175% buyback (max loss)</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 1 (25%)</div>
-        <div class="price">$1.02</div>
-        <div class="delta">Close 25% · stop → BE</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 2 (50%)</div>
-        <div class="price">$0.68</div>
-        <div class="delta">Close 25% · lock 25%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 3 (75%)</div>
-        <div class="price">$0.34</div>
-        <div class="delta">Close 25% · lock 50%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head target">🏁 Tier 4 (90%)</div>
-        <div class="price">$0.14</div>
-        <div class="delta">Close remainder</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head time">⏱ Time stop</div>
-        <div class="price">21 DTE</div>
-        <div class="delta">Exit regardless of P&L</div>
-      </div>
-    </div>
-  </div>
-
-  <p class="rationale"><b>Rationale:</b> CCS SPY 760/765C 2026-06-18 for $1.36 credit (IVR 40, |Δ| 0.27)</p>
-</div>
 <div class="pick-card put">
   <div class="pick-header">
     <div>
@@ -2347,108 +2502,6 @@ footer {
   </div>
 
   <p class="rationale"><b>Rationale:</b> PCS SPY 722/717P 2026-06-18 for $1.11 credit (IVR 40, |Δ| 0.34)</p>
-</div>
-<div class="pick-card call">
-  <div class="pick-header">
-    <div>
-      <span class="ticker">IWM</span>
-      <span class="strategy-badge">
-📈 CALL CREDIT SPREAD
-      </span>
-    </div>
-    <div class="score">Score: <b>80.6</b>/100</div>
-  </div>
-
-
-  <div class="pick-grid">
-    <div class="field">
-      <span class="name">Short strike</span>
-      <span class="value">$294</span>
-    </div>
-    <div class="field">
-      <span class="name">Long strike</span>
-      <span class="value">$299</span>
-    </div>
-    <div class="field">
-      <span class="name">Spread width</span>
-      <span class="value">$5</span>
-    </div>
-    <div class="field">
-      <span class="name">Expiry</span>
-      <span class="value">2026-06-18</span>
-    </div>
-    <div class="field">
-      <span class="name">DTE</span>
-      <span class="value">39 days</span>
-    </div>
-    <div class="field">
-      <span class="name">Net credit</span>
-      <span class="value positive">$1.40</span>
-    </div>
-    <div class="field">
-      <span class="name">Max loss</span>
-      <span class="value danger">$360 / contract</span>
-    </div>
-    <div class="field">
-      <span class="name">Short bid/ask</span>
-      <span class="value">$4.09 / $4.17</span>
-    </div>
-    <div class="field">
-      <span class="name">Short Δ</span>
-      <span class="value">+0.32</span>
-    </div>
-    <div class="field">
-      <span class="name">IV rank</span>
-      <span class="value">40</span>
-    </div>
-    <div class="field">
-      <span class="name">Long bid/ask</span>
-      <span class="value">$2.62 / $2.69</span>
-    </div>
-  </div>
-
-  <div class="trade-management">
-    <div class="header">
-      <span class="title">📋 Trade management</span>
-      <span class="entry">
-        Entry: $1.40 credit · Set GTC orders immediately after fill
-      </span>
-    </div>
-    <div class="tier-grid">
-      <div class="tier-cell">
-        <div class="head stop">🛑 Hard stop</div>
-        <div class="price">$3.85</div>
-        <div class="delta">+175% buyback (max loss)</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 1 (25%)</div>
-        <div class="price">$1.05</div>
-        <div class="delta">Close 25% · stop → BE</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 2 (50%)</div>
-        <div class="price">$0.70</div>
-        <div class="delta">Close 25% · lock 25%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head tier">🎯 Tier 3 (75%)</div>
-        <div class="price">$0.35</div>
-        <div class="delta">Close 25% · lock 50%</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head target">🏁 Tier 4 (90%)</div>
-        <div class="price">$0.14</div>
-        <div class="delta">Close remainder</div>
-      </div>
-      <div class="tier-cell">
-        <div class="head time">⏱ Time stop</div>
-        <div class="price">21 DTE</div>
-        <div class="delta">Exit regardless of P&L</div>
-      </div>
-    </div>
-  </div>
-
-  <p class="rationale"><b>Rationale:</b> CCS IWM 294/299C 2026-06-18 for $1.40 credit (IVR 40, |Δ| 0.32)</p>
 </div>
 <div class="pick-card put">
   <div class="pick-header">
@@ -2552,10 +2605,13 @@ footer {
 
   <p class="rationale"><b>Rationale:</b> PCS IWM 274/269P 2026-06-12 for $0.99 credit (IVR 40, |Δ| 0.29)</p>
 </div>
+  </div>
+</div>
+
 
 </main>
 <footer>
-Generated 2026-05-10 09:35 UTC.
+Generated 2026-05-10 23:46 UTC.
 </footer>
 </body>
 </html>

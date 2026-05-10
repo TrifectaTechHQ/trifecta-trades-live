@@ -224,6 +224,50 @@ td.legs { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8
 }
 .terminal .label { color: var(--text-dim); }
 .terminal .position-block { margin-top: 0.7rem; }
+.picks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1rem 0 0 0;
+}
+.picks-grid > .picks-column { min-width: 0; }
+.picks-column-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.4rem 0;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+}
+.picks-column-header.call {
+  background: rgba(63, 185, 80, 0.12);
+  color: var(--positive);
+  border-left: 3px solid var(--positive);
+}
+.picks-column-header.put {
+  background: rgba(248, 81, 73, 0.12);
+  color: var(--negative);
+  border-left: 3px solid var(--negative);
+}
+.picks-column-header.neutral {
+  background: rgba(88, 166, 255, 0.10);
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+}
+.picks-column .pick-card { margin: 0.6rem 0; }
+.picks-column .empty {
+  margin: 0.6rem 0;
+  padding: 1rem;
+  background: var(--panel);
+  border: 1px dashed var(--panel-border);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+@media (max-width: 900px) {
+  .picks-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+}
 .pick-card {
   background: var(--panel);
   border: 1px solid var(--panel-border);
@@ -465,10 +509,10 @@ footer {
 </header>
 <main>
 <h2>📊 Position Monitor — sim_10k</h2>
-<p class="muted">Last updated: 2026-05-10 09:35 UTC</p>
+<p class="muted">Last updated: 2026-05-10 23:46 UTC</p>
 
 <div class="terminal">
-<div class="rule">============================================================</div>  POSITION MONITOR — SIM_10K — 2026-05-10 09:35 UTC
+<div class="rule">============================================================</div>  POSITION MONITOR — SIM_10K — 2026-05-10 23:46 UTC
 <div class="rule">============================================================</div>
 
   <span class="label">Starting capital:</span>  $   10,000.00
@@ -502,511 +546,20 @@ footer {
 </thead>
 <tbody>
 <tr>
-  <td>2026-05-10T09:35:45.193006+00:00</td>
+  <td>2026-05-10T23:46:40.874998+00:00</td>
   <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $429 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192967+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $427 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192928+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $445 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192889+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $382 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192843+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $361 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192800+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $400 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192761+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $318 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192721+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $439 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192679+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $432 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192625+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $408 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192586+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $374 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192547+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $335 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192508+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $435 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192470+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $377 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192431+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $324 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192393+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>SPY</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $369 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192349+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $428 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192311+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $414 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192273+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $420 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192235+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $345 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192196+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $427 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192153+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $428 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192113+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>SPY</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $378 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192075+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $422 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192037+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $380 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.192000+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $379 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191962+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $426 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191924+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $411 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191885+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $410 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191847+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $402 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191809+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>SPY</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $373 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191770+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $404 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191732+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>SPY</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $382 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191693+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $385 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191640+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $360 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191595+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $419 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191553+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $367 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191515+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $424 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191478+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $357 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191439+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $413 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191402+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $395 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191364+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $340 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191326+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $381 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191288+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $318 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191250+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $418 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191212+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $423 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191174+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $352 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191136+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>QQQ</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $407 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191097+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>put_credit_spread</td>
-  <td>risk_limit: position cost $356 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
-</tr>
-<tr>
-  <td>2026-05-10T09:35:45.191059+00:00</td>
-  <td>
-<span class="negative">❌ Rejected</span>
-  </td>
-  <td>IWM</td>
-  <td>call_credit_spread</td>
-  <td>risk_limit: position cost $412 exceeds 2.0% of equity ($200)</td>
-  <td><code class="muted">scan-20260510T093542Z-13da57f6</code></td>
+<span class="muted">scan_offmarket_no_fills</span>  </td>
+  <td>—</td>
+  <td>—</td>
+  <td>candidates_evaluated=113, reason=US market closed at scan time — recommendations published, simulator entries skipped</td>
+  <td><code class="muted">scan-20260510T234638Z-894544dd</code></td>
 </tr>
 </tbody>
 </table>
 
 </main>
 <footer>
-Generated 2026-05-10 09:35 UTC.
+Generated 2026-05-10 23:46 UTC.
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"
         integrity="sha384-Sse/HDqcypGpyTDpvZOJNnG0TT3feGQUkF9H+mnRvic+LjR+K1NhTt8f51KIQ3v3"
