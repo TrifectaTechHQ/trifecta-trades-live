@@ -509,10 +509,10 @@ footer {
 </header>
 <main>
 <h2>📊 Position Monitor — sim_10k</h2>
-<p class="muted">Last updated: 2026-05-11 14:30 UTC</p>
+<p class="muted">Last updated: 2026-05-11 14:45 UTC</p>
 
 <div class="terminal">
-<div class="rule">============================================================</div>  POSITION MONITOR — SIM_10K — 2026-05-11 14:30 UTC
+<div class="rule">============================================================</div>  POSITION MONITOR — SIM_10K — 2026-05-11 14:45 UTC
 <div class="rule">============================================================</div>
 
   <span class="label">Starting capital:</span>  $   10,000.00
@@ -521,9 +521,34 @@ footer {
   <span class="label">Win rate (closed):</span> <span class="muted">— no closed trades yet</span>
 <div class="rule">------------------------------------------------------------</div>
 
-  0 open position(s) <span class="muted">— nothing to monitor</span>
+  5 open position(s)
+<div class="position-block">  <b>IWM 275/270P 2026-06-18</b> (put_credit_spread · 1 contract · held 0d)
+     <span class="label">Entry:</span> $1.07 credit
+     <span class="label">MAE:</span> 0%  |  <span class="label">MFE:</span> 0%
+     <span class="label">Working stop:</span> -175%  |  <span class="label">Tiers hit:</span> —  |  <span class="label">Next:</span> 25%     <span class="label">Time stop:</span> 38d to expiry     <span class="label">Max risk:</span> $394
+</div>
+<div class="position-block">  <b>QQQ 740/745C 2026-06-18</b> (call_credit_spread · 1 contract · held 0d)
+     <span class="label">Entry:</span> $1.48 credit
+     <span class="label">MAE:</span> 0%  |  <span class="label">MFE:</span> 0%
+     <span class="label">Working stop:</span> -175%  |  <span class="label">Tiers hit:</span> —  |  <span class="label">Next:</span> 25%     <span class="label">Time stop:</span> 38d to expiry     <span class="label">Max risk:</span> $354
+</div>
+<div class="position-block">  <b>QQQ 685/680P 2026-06-18</b> (put_credit_spread · 1 contract · held 0d)
+     <span class="label">Entry:</span> $1.10 credit
+     <span class="label">MAE:</span> 0%  |  <span class="label">MFE:</span> 0%
+     <span class="label">Working stop:</span> -175%  |  <span class="label">Tiers hit:</span> —  |  <span class="label">Next:</span> 25%     <span class="label">Time stop:</span> 38d to expiry     <span class="label">Max risk:</span> $392
+</div>
+<div class="position-block">  <b>SPY 760/765C 2026-06-18</b> (call_credit_spread · 1 contract · held 0d)
+     <span class="label">Entry:</span> $1.48 credit
+     <span class="label">MAE:</span> 0%  |  <span class="label">MFE:</span> 0%
+     <span class="label">Working stop:</span> -175%  |  <span class="label">Tiers hit:</span> —  |  <span class="label">Next:</span> 25%     <span class="label">Time stop:</span> 38d to expiry     <span class="label">Max risk:</span> $354
+</div>
+<div class="position-block">  <b>SPY 720/715P 2026-06-18</b> (put_credit_spread · 1 contract · held 0d)
+     <span class="label">Entry:</span> $1.01 credit
+     <span class="label">MAE:</span> 0%  |  <span class="label">MFE:</span> 0%
+     <span class="label">Working stop:</span> -175%  |  <span class="label">Tiers hit:</span> —  |  <span class="label">Next:</span> 25%     <span class="label">Time stop:</span> 38d to expiry     <span class="label">Max risk:</span> $400
+</div>
 <div class="rule">------------------------------------------------------------</div>
-  <span class="label">Summary:</span>  0 closed  |  0 still open
+  <span class="label">Summary:</span>  0 closed  |  5 still open
 <div class="rule">============================================================</div>
 </div>
 
@@ -546,20 +571,511 @@ footer {
 </thead>
 <tbody>
 <tr>
-  <td>2026-05-10T23:46:40.874998+00:00</td>
+  <td>2026-05-11T14:45:41.782742+00:00</td>
   <td>
-<span class="muted">scan_offmarket_no_fills</span>  </td>
-  <td>—</td>
-  <td>—</td>
-  <td>candidates_evaluated=113, reason=US market closed at scan time — recommendations published, simulator entries skipped</td>
-  <td><code class="muted">scan-20260510T234638Z-894544dd</code></td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782692+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782640+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782580+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782523+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782472+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782420+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782362+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782249+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782198+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782148+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782098+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.782048+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781999+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781949+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781900+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781851+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781802+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781753+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781702+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781645+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781595+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781544+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781495+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781438+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781389+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781339+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781280+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781211+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781162+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781113+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781065+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.781016+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780967+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780916+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780859+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780810+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780761+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780712+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780663+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780616+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780568+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780519+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780470+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780422+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780373+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780308+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>call_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780233+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>SPY</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780185+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>QQQ</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
+</tr>
+<tr>
+  <td>2026-05-11T14:45:41.780136+00:00</td>
+  <td>
+<span class="negative">❌ Rejected</span>
+  </td>
+  <td>IWM</td>
+  <td>put_credit_spread</td>
+  <td>risk_limit: max_concurrent_positions=5 reached (5 open)</td>
+  <td><code class="muted">scan-20260511T144539Z-a2b0400f</code></td>
 </tr>
 </tbody>
 </table>
 
 </main>
 <footer>
-Generated 2026-05-11 14:30 UTC.
+Generated 2026-05-11 14:45 UTC.
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"
         integrity="sha384-Sse/HDqcypGpyTDpvZOJNnG0TT3feGQUkF9H+mnRvic+LjR+K1NhTt8f51KIQ3v3"
